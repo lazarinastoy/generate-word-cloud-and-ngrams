@@ -26,7 +26,8 @@ def main():
 
     if st.button("Generate"):
         ngrams_series = pd.Series(ngrams)
-        wordcloud = WordCloud().generate_from_frequencies(ngrams_series.value_counts().to_dict())
+        ngrams_dict = ngrams_series.value_counts().to_dict()
+        wordcloud = WordCloud().generate_from_frequencies(ngrams_dict)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis("off")
         st.pyplot()
