@@ -25,8 +25,8 @@ def main():
     n = st.selectbox("Select N for N-grams", [2,3,4])
 
     if st.button("Generate"):
-        ngrams, df = process_data(file, n)
-        wordcloud = WordCloud().generate_from_frequencies(ngrams)
+        ngrams_series = pd.Series(ngrams)
+        wordcloud = WordCloud().generate_from_frequencies(ngrams_series.value_counts().to_dict())
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis("off")
         st.pyplot()
