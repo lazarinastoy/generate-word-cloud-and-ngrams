@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 @st.cache
 def process_data(file, n):
     df = pd.read_excel(file, converters={'column': str})
+    df['column'].fillna('', inplace=True)
     text = ' '.join(df.column.tolist())
     ngrams = []
     for i in range(len(text)-n+1):
