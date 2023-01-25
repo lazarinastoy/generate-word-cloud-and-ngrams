@@ -10,7 +10,7 @@ def process_data(file, n):
     ngrams = []
     for i in range(len(text)-n+1):
         ngrams.append(text[i:i+n])
-    return ngrams
+    return ngrams, df
 
 def main():
     st.set_page_config(page_title="NGram Generator", page_icon=":guardsman:", layout="wide")
@@ -24,17 +24,18 @@ def main():
     n = st.selectbox("Select N for N-grams", [2,3,4])
 
     if st.button("Generate"):
-        ngrams = process_data(file, n)
+        ngrams, df = process_data(file, n)
         wordcloud = WordCloud().generate_from_frequencies(ngrams)
         plt.imshow(wordcloud, interpolation='bilinear')
         plt.axis("off")
         st.pyplot()
-        if st.checkbox("Want to export the ngrams?"):
-            st.write("Exported the ngrams to a spreadsheet.")
-            export_file = st.file_uploader("Upload the excel file you want to export to", type=["xlsx"])
-            if export_file:
-                export_df = pd.DataFrame(ngrams,columns=['N-grams'])
-                export_df.to_excel(export_file, index=False)
+        st.write("Exported the ngrams to a spreadsheet.")
+        # Automatic download of processed spreadsheet
+        st.markdown('### Download the processed spreadsheet')
+        csv = df.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
+        href = f'<a href="data:file/csv;base64,{b64}">Download processed spreadsheet</a>'
+        st.markdown(href, unsafe_allow_html=True)
 
 if __name__=='__main__':
     main()
