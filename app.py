@@ -25,6 +25,7 @@ def main():
     n = st.selectbox("Select N for N-grams", [2,3,4])
 
     if st.button("Generate"):
+        ngrams, df = process_data(file, n)
         ngrams_series = pd.Series(ngrams)
         ngrams_dict = ngrams_series.value_counts().to_dict()
         wordcloud = WordCloud().generate_from_frequencies(ngrams_dict)
