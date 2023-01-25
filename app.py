@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 @st.cache
 def process_data(file, n):
-    df = pd.read_excel(file)
+    df = pd.read_excel(file, converters={'column': str})
     text = ' '.join(df.column.tolist())
     ngrams = []
     for i in range(len(text)-n+1):
